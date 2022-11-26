@@ -16,7 +16,9 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run(){
     try{
         const phonesCollection = client.db('phoneMart').collection('phones');
+        const usersCollection = client.db('phoneMart').collection('users');
 
+        //add products or phones
         app.post('/dashboard/add-product',async (req,res)=>{
             const phone = req.body;
             const postDate = new Date();
@@ -24,6 +26,14 @@ async function run(){
             const result = await phonesCollection.insertOne(phoneWithDate);
             res.send(result);
         });
+
+        //add users to database
+        app.post('/users',async (req,res)=>{
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        });
+
     }
     finally{
 
