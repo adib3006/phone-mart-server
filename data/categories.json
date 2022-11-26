@@ -1,0 +1,17 @@
+[
+    {
+        "categoryId": "01",
+        "categoryName": "Android",
+        "categoryImage": "https://i.ibb.co/D8b3qkD/android.png"
+    },
+    {
+        "categoryId": "02",
+        "categoryName": "Apple",
+        "categoryImage": "https://i.ibb.co/g7yyFtK/apple.png"
+    },
+    {
+        "categoryId": "03",
+        "categoryName": "Feature",
+        "categoryImage": "https://i.ibb.co/jTMXN7T/feature-logo.png"
+    }
+]

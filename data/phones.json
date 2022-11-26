@@ -1,0 +1,110 @@
+[
+    {
+        "id": "01",
+        "image": "https://i.ibb.co/ZTV9ZSs/samsung.jpg",
+        "name": "Samsung",
+        "location": "Dhaka",
+        "resellPrice": "200",
+        "originalPrice": "400",
+        "yearsOfUse": "2",
+        "postDate": "Fri Nov 25 2022 16:15:33 GMT+0600 (Bangladesh Standard Time)",
+        "sellerName": "John Wick",
+        "categoryId": "01"
+    },
+    {
+        "id": "02",
+        "image": "https://i.ibb.co/ZTV9ZSs/samsung.jpg",
+        "name": "Samsung",
+        "location": "Dhaka",
+        "resellPrice": "200",
+        "originalPrice": "400",
+        "yearsOfUse": "2",
+        "postDate": "Fri Nov 25 2022 16:15:33 GMT+0600 (Bangladesh Standard Time)",
+        "sellerName": "John Wick",
+        "categoryId": "01"
+    },
+    {
+        "id": "03",
+        "image": "https://i.ibb.co/ZTV9ZSs/samsung.jpg",
+        "name": "Samsung",
+        "location": "Dhaka",
+        "resellPrice": "200",
+        "originalPrice": "400",
+        "yearsOfUse": "2",
+        "postDate": "Fri Nov 25 2022 16:15:33 GMT+0600 (Bangladesh Standard Time)",
+        "sellerName": "John Wick",
+        "categoryId": "01"
+    },
+    {
+        "id": "04",
+        "image": "https://i.ibb.co/SB4V6pf/iphone.jpg",
+        "name": "Iphone",
+        "location": "Dhaka",
+        "resellPrice": "200",
+        "originalPrice": "400",
+        "yearsOfUse": "2",
+        "postDate": "Fri Nov 25 2022 16:15:33 GMT+0600 (Bangladesh Standard Time)",
+        "sellerName": "John Wick",
+        "categoryId": "02"
+    },
+    {
+        "id": "05",
+        "image": "https://i.ibb.co/SB4V6pf/iphone.jpg",
+        "name": "Iphone",
+        "location": "Dhaka",
+        "resellPrice": "200",
+        "originalPrice": "400",
+        "yearsOfUse": "2",
+        "postDate": "Fri Nov 25 2022 16:15:33 GMT+0600 (Bangladesh Standard Time)",
+        "sellerName": "John Wick",
+        "categoryId": "02"
+    },
+    {
+        "id": "06",
+        "image": "https://i.ibb.co/SB4V6pf/iphone.jpg",
+        "name": "Iphone",
+        "location": "Dhaka",
+        "resellPrice": "200",
+        "originalPrice": "400",
+        "yearsOfUse": "2",
+        "postDate": "Fri Nov 25 2022 16:15:33 GMT+0600 (Bangladesh Standard Time)",
+        "sellerName": "John Wick",
+        "categoryId": "02"
+    },
+    {
+        "id": "07",
+        "image": "https://i.ibb.co/P6cY0RS/feature.jpg",
+        "name": "Nokia 1200",
+        "location": "Dhaka",
+        "resellPrice": "200",
+        "originalPrice": "400",
+        "yearsOfUse": "2",
+        "postDate": "Fri Nov 25 2022 16:15:33 GMT+0600 (Bangladesh Standard Time)",
+        "sellerName": "John Wick",
+        "categoryId": "03"
+    },
+    {
+        "id": "08",
+        "image": "https://i.ibb.co/P6cY0RS/feature.jpg",
+        "name": "Nokia 1200",
+        "location": "Dhaka",
+        "resellPrice": "200",
+        "originalPrice": "400",
+        "yearsOfUse": "2",
+        "postDate": "Fri Nov 25 2022 16:15:33 GMT+0600 (Bangladesh Standard Time)",
+        "sellerName": "John Wick",
+        "categoryId": "03"
+    },
+    {
+        "id": "09",
+        "image": "https://i.ibb.co/P6cY0RS/feature.jpg",
+        "name": "Nokia 1200",
+        "location": "Dhaka",
+        "resellPrice": "200",
+        "originalPrice": "400",
+        "yearsOfUse": "2",
+        "postDate": "Fri Nov 25 2022 16:15:33 GMT+0600 (Bangladesh Standard Time)",
+        "sellerName": "John Wick",
+        "categoryId": "03"
+    }
+]
