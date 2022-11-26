@@ -18,6 +18,7 @@ async function run(){
         const phonesCollection = client.db('phoneMart').collection('phones');
         const usersCollection = client.db('phoneMart').collection('users');
         const categoriesCollection = client.db('phoneMart').collection('categories');
+        const ordersCollection = client.db('phoneMart').collection('orders');
 
         //add products or phones
         app.post('/dashboard/add-product',async (req,res)=>{
@@ -96,6 +97,34 @@ async function run(){
             const query = {role:"buyer"};
             const buyers =await usersCollection.find(query).toArray();
             res.send(buyers);
+        })
+
+        //add orders
+        app.post('/orders',async(req,res)=>{
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order);
+            res.send(result);
+        })
+
+        //update phone sold status
+        app.patch('/orders/phone/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const updatedDoc = {
+                $set : {
+                    sold: true
+                }
+            }
+            const result = await phonesCollection.updateOne(query,updatedDoc);
+            res.send(result);
+        })
+
+        //get orders by email
+        app.get('/orders', async(req,res)=>{
+            const email = req.query.email;
+            const query = {email:email};
+            const orders =await ordersCollection.find(query).toArray();
+            res.send(orders);
         })
 
     }
