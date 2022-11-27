@@ -168,6 +168,18 @@ async function run(){
             res.send(orders);
         })
 
+        //report a item
+        app.patch('/report/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const updatedDoc = {
+                $set : {
+                    report: true
+                }
+            }
+            const result = await phonesCollection.updateOne(query,updatedDoc);
+            res.send(result);
+        })
     }
     finally{
 
