@@ -65,7 +65,7 @@ async function run(){
             }
             const phoneList =await phonesCollection.find(query).sort({postDate:-1}).toArray();
             const phone = phoneList[0];
-            res.send(phone);
+            res.send(phoneList);
         })
 
         //add users to database
@@ -112,7 +112,48 @@ async function run(){
             const query = {_id: ObjectId(id)};
             const updatedDoc = {
                 $set : {
-                    sold: true
+                    sold: true,
+                    advertise: false
+                }
+            }
+            const result = await phonesCollection.updateOne(query,updatedDoc);
+            res.send(result);
+        })
+
+        //update phone sold status
+        app.patch('/my-products/sold/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const updatedDoc = {
+                $set : {
+                    sold: false,
+                    advertise: false
+                }
+            }
+            const result = await phonesCollection.updateOne(query,updatedDoc);
+            res.send(result);
+        })
+
+        //update phone advertise status
+        app.patch('/my-products/ad/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const updatedDoc = {
+                $set : {
+                    advertise: true
+                }
+            }
+            const result = await phonesCollection.updateOne(query,updatedDoc);
+            res.send(result);
+        })
+
+        //remove prices from my-product
+        app.patch('/my-products/price/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const updatedDoc = {
+                $set : {
+                    resellPrice: "N/A"
                 }
             }
             const result = await phonesCollection.updateOne(query,updatedDoc);
