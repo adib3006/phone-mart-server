@@ -180,6 +180,39 @@ async function run(){
             const result = await phonesCollection.updateOne(query,updatedDoc);
             res.send(result);
         })
+
+        //get reported products
+        app.get('/reported-products', async(req,res)=>{
+            const query = {report:true};
+            const products = await phonesCollection.find(query).toArray();
+            res.send(products);
+        })
+
+        //resolve selected items
+        app.patch('/reported-products/resolve/:id', async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const updatedDoc = {
+                $set : {
+                    report: false
+                }
+            }
+            const result = await phonesCollection.updateOne(query,updatedDoc);
+            res.send(result);
+        })
+
+        //delete reported item
+        app.delete('/reported-products/delete/:id', async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const phone = await phonesCollection.findOne(query);
+            if(!phone?._id){
+                res.send('Phone does not exist');
+                return;
+            }
+            const result = await phonesCollection.deleteOne(query);
+            res.send(result);
+        })
     }
     finally{
 
