@@ -6,8 +6,8 @@ require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 const port = process.env.Port || 5000;
-const categories = require('./data/categories.json');
-const phones = require('./data/phones.json');
+//const categories = require('./data/categories.json');
+//const phones = require('./data/phones.json');
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.5voiazn.mongodb.net/?retryWrites=true&w=majority`;
@@ -40,10 +40,11 @@ async function run(){
         //get all phones of one category
         app.get('/categories/:id', async (req,res)=>{
             const id = req.params.id;
-            const query = {categoryId : id};
-            const query1 = {categoryId: id};
-            const phoneCategory =await phonesCollection.find(query).toArray();
+            const query1 = {_id: ObjectId(id)};
             const category =await categoriesCollection.findOne(query1);
+            const {categoryId} = category;
+            const query = {categoryId : categoryId};
+            const phoneCategory =await phonesCollection.find(query).toArray();
             const name = category.categoryName;
             res.send({phoneCategory,name});
         })
@@ -211,6 +212,32 @@ async function run(){
                 return;
             }
             const result = await phonesCollection.deleteOne(query);
+            res.send(result);
+        })
+
+        //verify seller
+        app.patch('/all-seller/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const updatedDoc = {
+                $set : {
+                    status: "verified"
+                }
+            }
+            const result = await usersCollection.updateOne(query,updatedDoc);
+            res.send(result);
+        })
+
+        //delete user
+        app.delete('/delete/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const user = await usersCollection.findOne(query);
+            if(!user?._id){
+                res.send('User does not exist');
+                return;
+            }
+            const result = await usersCollection.deleteOne(query);
             res.send(result);
         })
     }
