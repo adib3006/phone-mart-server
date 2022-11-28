@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const app = express();
 const { MongoClient, ServerApiVersion, ObjectId  } = require('mongodb');
-require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 const port = process.env.Port || 5000;
@@ -13,12 +14,43 @@ const port = process.env.Port || 5000;
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.5voiazn.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+function verifyJWT(req, res, next) {
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).send('unauthorized access');
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decoded) {
+        if (err) {
+            return res.status(403).send({ message: 'forbidden access' })
+        }
+        req.decoded = decoded;
+        next();
+    })
+
+}
+
 async function run(){
     try{
         const phonesCollection = client.db('phoneMart').collection('phones');
         const usersCollection = client.db('phoneMart').collection('users');
         const categoriesCollection = client.db('phoneMart').collection('categories');
         const ordersCollection = client.db('phoneMart').collection('orders');
+
+        //get JWT
+        app.get('/jwt', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            if (user) {
+                const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1d' })
+                return res.send({ accessToken: token });
+            }
+            res.status(403).send({ accessToken: '' });
+        })
 
         //add products or phones
         app.post('/dashboard/add-product',async (req,res)=>{
@@ -50,7 +82,7 @@ async function run(){
         })
 
         //get all phones by email
-        app.get('/dashboard/my-products', async(req,res)=>{
+        app.get('/dashboard/my-products',verifyJWT, async(req,res)=>{
             const email = req.query.email;
             const query = {sellerEmail:email,payment:false};
             const myProducts = await phonesCollection.find(query).toArray();
@@ -95,7 +127,7 @@ async function run(){
         })
 
         //get buyers
-        app.get('/dashboard/all-buyers',async (req,res)=>{
+        app.get('/dashboard/all-buyers', verifyJWT, async (req,res)=>{
             const query = {role:"buyer"};
             const buyers =await usersCollection.find(query).toArray();
             res.send(buyers);
@@ -163,7 +195,7 @@ async function run(){
         })
 
         //get orders by email
-        app.get('/orders', async(req,res)=>{
+        app.get('/orders',verifyJWT, async(req,res)=>{
             const email = req.query.email;
             const query = {email:email};
             const orders =await ordersCollection.find(query).toArray();
