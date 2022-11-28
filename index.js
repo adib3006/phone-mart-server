@@ -84,7 +84,7 @@ async function run(){
                 }
             }
             const updatedResult = await phonesCollection.updateOne(filter, updatedDoc)
-            const deleteResult = await ordersCollection.deleteOne(filter2)
+            const updatedResult2 = await ordersCollection.updateOne(filter2, updatedDoc)
             res.send(result);
         })
 
