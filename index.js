@@ -7,6 +7,7 @@ const { MongoClient, ServerApiVersion, ObjectId  } = require('mongodb');
 app.use(cors());
 app.use(express.json());
 const port = process.env.Port || 5000;
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 //const categories = require('./data/categories.json');
 //const phones = require('./data/phones.json');
 
@@ -39,6 +40,7 @@ async function run(){
         const usersCollection = client.db('phoneMart').collection('users');
         const categoriesCollection = client.db('phoneMart').collection('categories');
         const ordersCollection = client.db('phoneMart').collection('orders');
+        const paymentsCollection = client.db('phoneMart').collection('payments');
 
         //get JWT
         app.get('/jwt', async (req, res) => {
@@ -50,6 +52,40 @@ async function run(){
                 return res.send({ accessToken: token });
             }
             res.status(403).send({ accessToken: '' });
+        })
+
+        //payment related section
+        app.post('/create-payment-intent', async (req, res) => {
+            const order = req.body;
+            const price = order.price;
+            const amount = price * 100;
+
+            const paymentIntent = await stripe.paymentIntents.create({
+                currency: 'usd',
+                amount: amount,
+                "payment_method_types": [
+                    "card"
+                ]
+            });
+            res.send({
+                clientSecret: paymentIntent.client_secret,
+            });
+        });
+
+        app.post('/payments', async (req, res) =>{
+            const payment = req.body;
+            const result = await paymentsCollection.insertOne(payment);
+            const id = payment.productId
+            const filter = {_id: ObjectId(id)}
+            const filter2 = {_id: ObjectId(payment.orderId)}
+            const updatedDoc = {
+                $set: {
+                    payment:true
+                }
+            }
+            const updatedResult = await phonesCollection.updateOne(filter, updatedDoc)
+            const deleteResult = await ordersCollection.deleteOne(filter2)
+            res.send(result);
         })
 
         //add products or phones
@@ -200,6 +236,14 @@ async function run(){
             const query = {email:email};
             const orders =await ordersCollection.find(query).toArray();
             res.send(orders);
+        })
+
+        //get order by id
+        app.get('/orders/:id', async (req,res) => {
+            const id = req.params.id;
+            const query = {_id:ObjectId(id)};
+            const order = await ordersCollection.findOne(query);
+            res.send(order);
         })
 
         //report a item
