@@ -43,7 +43,7 @@ async function run(){
             const query1 = {_id: ObjectId(id)};
             const category =await categoriesCollection.findOne(query1);
             const {categoryId} = category;
-            const query = {categoryId : categoryId};
+            const query = {categoryId : categoryId, payment: false};
             const phoneCategory =await phonesCollection.find(query).toArray();
             const name = category.categoryName;
             res.send({phoneCategory,name});
@@ -52,7 +52,7 @@ async function run(){
         //get all phones by email
         app.get('/dashboard/my-products', async(req,res)=>{
             const email = req.query.email;
-            const query = {sellerEmail:email};
+            const query = {sellerEmail:email,payment:false};
             const myProducts = await phonesCollection.find(query).toArray();
             res.send(myProducts);
         })
@@ -62,7 +62,8 @@ async function run(){
             let query = {};
             query = { 
                 advertise : true,
-                sold : false
+                sold : false,
+                payment: false
             }
             const phoneList =await phonesCollection.find(query).sort({postDate:-1}).toArray();
             const phone = phoneList[0];
